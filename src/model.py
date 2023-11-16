@@ -3,9 +3,34 @@ from tensorflow.keras import layers
 from functools import partial
 from .layer import TimeSelectionLayer, binary_sigmoid_unit, TimeSelectionLayerConstant
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.linear_model import Lasso
 import numpy as np
+
+class CustomBoostingRegressor:
+    def __init__(self, n_estimators=100, max_depth=3):
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.estimators = []
+
+    def fit(self, X, y):
+        residual = y.copy()
+        for i in range(self.n_estimators):
+            estimator = DecisionTreeRegressor(max_depth=3)
+
+            estimator.fit(X, residual)
+            self.estimators.append(estimator)
+
+            # Actualizar el residual para el siguiente estimador
+            predictions = estimator.predict(X)
+            residual -= predictions
+
+    def predict(self, X):
+        # Inicializar predicciones a cero
+        y_pred = np.zeros(X.shape[0])
+        for estimator in self.estimators:
+            y_pred += estimator.predict(X)
+        return y_pred
 
 
 def get_hyperparameters() -> tuple:
@@ -152,6 +177,10 @@ def get_sk_model(parameters: dict):
         model = Lasso(alpha=parameters['model']['params']['regularization'])
     elif model == 'randomforest':
         model = RandomForestRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
+    elif model == 'gradientboosting':
+        model = GradientBoostingRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
+    elif model == 'customboosting':
+        model = CustomBoostingRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
     else:
         raise NotImplementedError()
 
