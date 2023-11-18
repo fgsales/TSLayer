@@ -1,6 +1,7 @@
 torneo:
   seq_len:
     - 24
+    - 48
     - 72
   pred_len: 24
   shift: 24
