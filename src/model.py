@@ -27,7 +27,7 @@ class CustomBoostingRegressor:
 
     def predict(self, X):
         # Inicializar predicciones a cero
-        y_pred = np.zeros(X.shape[0])
+        y_pred = np.zeros((X.shape[0], self.estimators[0].n_outputs_))
         for estimator in self.estimators:
             y_pred += estimator.predict(X)
         return y_pred

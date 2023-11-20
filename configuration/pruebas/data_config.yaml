@@ -6,3 +6,30 @@ torneo:
   pred_len: 24
   shift: 24
   crossval: False
+
+demand:
+  seq_len:
+    - 24
+    - 48
+    - 72
+  pred_len: 24
+  shift: 24
+  crossval: False
+
+ETTh1:
+  seq_len:
+    - 24
+    - 48
+    - 72
+  pred_len: 24
+  shift: 24
+  crossval: False
+
+ETTh2:
+  seq_len:
+    - 24
+    - 48
+    - 72
+  pred_len: 24
+  shift: 24
+  crossval: False

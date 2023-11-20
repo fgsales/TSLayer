@@ -83,7 +83,10 @@ class ExperimentInstance:
 
         data_train, data_valid, data_test = windowing(train_scaled, valid_scaled, test_scaled, self.values_idxs, self.label_idxs, self.selected_idxs, self.parameters)
         
-        self.data_train = np.concatenate(list(map(lambda x: x.numpy(), next(data_train.batch(9999999999).__iter__())))[0])
+        if self.parameters['model']['params']['type'] == "tensorflow":
+            self.data_train = np.concatenate(list(map(lambda x: x.numpy(), next(data_train.batch(9999999999).__iter__())))[0])
+        else:
+            self.data_train = data_train
         
         return data_train, data_valid, data_test
 
@@ -159,8 +162,10 @@ class ExperimentInstance:
 
         if model_name == 'lasso':
             importances = model.coef_.max(axis=0)
-        else:
+        elif hasattr(model, "feature_importances_"):
             importances = model.feature_importances_
+        else:
+            importances = np.ones(len(features_idxs))
         self.selected_idxs = features_idxs[importances>0]
 
         return model, None

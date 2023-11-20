@@ -159,7 +159,7 @@ def windowing(train_scaled: np.ndarray, valid_scaled: np.ndarray, test_scaled: n
     shift = parameters['dataset']['params']['shift'] or seq_len
     select_timesteps = parameters['dataset']['params'].get('select_timesteps', True)
     model_type = parameters['model']['params']['type']
-    batch_size = parameters['model']['params']['batch_size']
+    batch_size = parameters['model']['params'].get('batch_size', 32)
 
     keep_dims = parameters['model']['params'].get('keep_dims', False)
 
