@@ -1,4 +1,16 @@
-customboosting:
+multi_boosting:
+  max_depth:
+    - 3
+    - 5
+    - 7
+    - 9
+  n_estimators:
+    - 10
+    - 50
+    - 100
+  type: sklearn
+
+parallel_boosting:
   max_depth:
     - 3
     - 5

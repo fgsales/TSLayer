@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.linear_model import Lasso
 import numpy as np
 
-class CustomBoostingRegressor:
+class MultiBoostingRegressor:
     def __init__(self, n_estimators=100, max_depth=3):
         self.n_estimators = n_estimators
         self.max_depth = max_depth
@@ -30,6 +30,44 @@ class CustomBoostingRegressor:
         y_pred = np.zeros((X.shape[0], self.estimators[0].n_outputs_))
         for estimator in self.estimators:
             y_pred += estimator.predict(X)
+        return y_pred
+    
+class ParallelBoostingRegressor:
+    def __init__(self, n_estimators=100, max_depth=3):
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.estimators = None
+        self.n_targets = None
+
+    def fit(self, X, y):
+        # Determinar el número de targets basado en la forma de y
+        if y.ndim == 1:
+            y = y[:, np.newaxis]
+            self.n_targets = 1
+        else:
+            self.n_targets = y.shape[1]
+
+        # Inicializar una lista de listas para los estimadores
+        self.estimators = [[] for _ in range(self.n_targets)]
+
+        for target in range(self.n_targets):
+            residual = y[:, target].copy()
+            for i in range(self.n_estimators):
+                estimator = DecisionTreeRegressor(max_depth=self.max_depth)
+
+                estimator.fit(X, residual)
+                self.estimators[target].append(estimator)
+
+                # Actualizar el residual para el siguiente estimador
+                predictions = estimator.predict(X)
+                residual -= predictions
+
+    def predict(self, X):
+        # Inicializar predicciones a cero
+        y_pred = np.zeros((X.shape[0], self.n_targets))
+        for target in range(self.n_targets):
+            for estimator in self.estimators[target]:
+                y_pred[:, target] += estimator.predict(X)
         return y_pred
 
 
@@ -179,8 +217,10 @@ def get_sk_model(parameters: dict):
         model = RandomForestRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
     elif model == 'gradientboosting':
         model = GradientBoostingRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
-    elif model == 'customboosting':
-        model = CustomBoostingRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
+    elif model == 'multi_boosting':
+        model = MultiBoostingRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
+    elif model == 'parallel_boosting':
+        model = ParallelBoostingRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
     else:
         raise NotImplementedError()
 
