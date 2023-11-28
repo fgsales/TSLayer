@@ -66,9 +66,9 @@ def get_values_and_labels_index(data: np.ndarray) -> tuple:
         tuple: Indices of label columns and value columns.
     """
     label_idxs = [idx for idx, col in enumerate(
-        data.drop('year', axis=1).columns) if 'target' in col]
+        data.drop('year', axis=1, errors="ignore").columns) if 'target' in col]
     values_idxs = [idx for idx, col in enumerate(
-        data.drop('year', axis=1).columns) if 'target' not in col]
+        data.drop('year', axis=1, errors="ignore").columns) if 'target' not in col]
 
     return label_idxs, values_idxs
 
@@ -196,7 +196,7 @@ def get_feature_names(data, parameters):
     select_timesteps = parameters['dataset']['params'].get('select_timesteps', True)
 
     feature_names = np.array(
-        [col for col in data.drop('year', axis=1).columns])
+        [col for col in data.drop('year', axis=1, errors="ignore").columns])
 
     features = np.array([np.core.defchararray.add(
         feature_names, ' t-'+str(i)) for i in range(seq_len, 0, -1)]).flatten()

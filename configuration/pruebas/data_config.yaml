@@ -1,35 +1,85 @@
-torneo:
+ETTh1_single:
   seq_len:
-    - 24
-    - 48
     - 72
   pred_len: 24
-  shift: 24
+  shift: 1
   crossval: False
 
-demand:
+ETTh2_single:
   seq_len:
-    - 24
-    - 48
     - 72
-  pred_len: 24
-  shift: 24
+  pred_len: 72
+  shift: 1
   crossval: False
 
-ETTh1:
-  seq_len:
-    - 24
-    - 48
-    - 72
-  pred_len: 24
-  shift: 24
-  crossval: False
+# torneo_single:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
 
-ETTh2:
-  seq_len:
-    - 24
-    - 48
-    - 72
-  pred_len: 24
-  shift: 24
-  crossval: False
+# demand_single:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
+
+# ETTh1_single:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
+
+# ETTh2_single:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
+
+# torneo:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
+
+# demand:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
+
+# ETTh1:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False
+
+# ETTh2:
+#   seq_len:
+#     - 24
+#     - 48
+#     - 72
+#   pred_len: 24
+#   shift: 24
+#   crossval: False

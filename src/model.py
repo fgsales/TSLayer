@@ -6,6 +6,8 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.linear_model import Lasso
 import numpy as np
+from xgboost import XGBRegressor
+from sklearn.multioutput import MultiOutputRegressor
 
 class MultiBoostingRegressor:
     def __init__(self, n_estimators=100, max_depth=3):
@@ -226,6 +228,29 @@ def get_sk_model(parameters: dict):
 
     return model
 
+def get_xgb_model(parameters: dict):
+    """
+    Create an XGBoost model based on the given parameters.
+
+    Args:
+        parameters (dict): The model parameters.
+
+    Returns:
+        object: The XGBoost model.
+    """
+
+    model = parameters['model']['name']
+
+    # Assuming the parameters are suitably named for XGBoost
+    if model == 'multi_xgb':
+        model = XGBRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'], multi_strategy='multi_output_tree')
+    elif model == 'parallel_xgb':
+        model = XGBRegressor(max_depth=parameters['model']['params']['max_depth'], n_estimators=parameters['model']['params']['n_estimators'])
+    else:
+        raise NotImplementedError()
+
+    return model
+
 
 def get_model(parameters: dict, label_idxs: list, values_idxs: list):
     """
@@ -244,8 +269,12 @@ def get_model(parameters: dict, label_idxs: list, values_idxs: list):
 
     if model_type == 'tensorflow':
         model = get_tf_model(parameters, label_idxs, values_idxs)
-    else:
+    elif model_type == 'sklearn':
         model = get_sk_model(parameters)
+    elif model_type == 'xgboost':
+        model = get_xgb_model(parameters)
+    else:
+        raise NotImplementedError()
 
     return model
 

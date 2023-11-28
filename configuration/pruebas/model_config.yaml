@@ -1,23 +1,71 @@
-multi_boosting:
+multi_xgb:
   max_depth:
     - 3
     - 5
     - 7
-    - 9
   n_estimators:
     - 10
+    - 20
     - 50
     - 100
-  type: sklearn
+  type: xgboost
 
-parallel_boosting:
+parallel_xgb:
   max_depth:
     - 3
     - 5
     - 7
-    - 9
   n_estimators:
     - 10
+    - 20
     - 50
     - 100
-  type: sklearn
+  type: xgboost
+
+# multi_boosting:
+#   max_depth:
+#     - 2
+#     - 3
+#     - 4
+#   n_estimators:
+#     - 2
+#     - 5
+#     - 10
+#     - 20
+#     - 30
+#   type: sklearn
+
+# parallel_boosting:
+#   max_depth:
+#     - 2
+#     - 3
+#     - 4
+#   n_estimators:
+#     - 2
+#     - 5
+#     - 10
+#     - 20
+#     - 30
+#   type: sklearn
+
+# multi_boosting:
+#   max_depth:
+#     - 2
+#     - 3
+#     - 4
+#   n_estimators:
+#     - 10
+#     - 50
+#     - 100
+#   type: sklearn
+
+# parallel_boosting:
+#   max_depth:
+#     - 2
+#     - 3
+#     - 4
+#   n_estimators:
+#     - 10
+#     - 50
+#     - 100
+#   type: sklearn
